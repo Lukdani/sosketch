@@ -24,6 +24,12 @@ export class DrawingView {
 
   addCanvas = (prevCanvas, id) => {
     this.rootElement.innerHTML = "";
+    const canvasContainer = createElement(
+      "span",
+      ["canvasContainer"],
+      `canvasContainer-${id}`
+    );
+    this.rootElement.appendChild(canvasContainer);
     const newCanvas = createElement(
       "canvas",
       ["drawingCanvas"],
@@ -31,7 +37,7 @@ export class DrawingView {
     );
     newCanvas.height = (60 * window.innerHeight) / 100;
     newCanvas.width = (80 * window.innerHeight) / 100;
-    this.rootElement.appendChild(newCanvas);
+    canvasContainer.appendChild(newCanvas);
   };
 
   addFinalCanvas = () => {
@@ -60,6 +66,26 @@ export class DrawingView {
   setFinalDrawingView = () => {
     const nextTurnButton = document.getElementById("nextTurnButton");
     if (nextTurnButton) nextTurnButton.textContent = "Finish drawing";
+  };
+
+  displayCutLineWarning = (canvasId, hide) => {
+    const canvas = document.getElementById(`canvasContainer-${canvasId}`);
+    console.log(canvas.getBoundingClientRect().y);
+    const warning = createElement("p", ["cutlineWarning"], null);
+    warning.style.top = `${
+      (canvas.getBoundingClientRect().height / 100) * 94 +
+      canvas.getBoundingClientRect().y -
+      1
+    }px`;
+    warning.style.transform = "translateY(-100%)";
+    warning.style.width = `${canvas.getBoundingClientRect().width}px`;
+    const warningText = createElement("span", null, null);
+    warningText.innerHTML = "Draw below <br> this line!";
+    warning.appendChild(warningText);
+
+    const warningIcon = createElement("i", ["fas", "fa-arrow-down"], null);
+    warning.appendChild(warningIcon);
+    canvas.appendChild(warning);
   };
 
   bindStartDrawingButton = (callback) => {

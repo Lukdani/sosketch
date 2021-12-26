@@ -80,7 +80,6 @@ canvas {
   border: 2px solid $customBlue;
   background: $customLight;
   display: block;
-  margin: 0.5rem;
 }
 
 #colorButtonPopover,
@@ -120,5 +119,21 @@ canvas {
     &:hover {
       background-color: #eee;
     }
+  }
+}
+
+.canvasContainer {
+  .cutlineWarning {
+    position: absolute;
+    border-bottom: 1px solid red;
+    line-height: normal;
+    display: flex;
+    flex-direction: column;
+    padding-bottom: 1rem;
+    align-items: center;
+    margin-right: 1rem;
+    pointer-events: none;
+    opacity: 0.8;
+    text-align: center;
   }
 }

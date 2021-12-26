@@ -15,6 +15,7 @@ export class DrawingController {
     this.prevY = null;
     this.draw = false;
 
+    const hasCrossedCutLine = false;
     this.toolbarModel = new ToolbarModel();
     this.toolbarView = new ToolbarView();
     this.toolbarController = new ToolbarController(
@@ -50,6 +51,12 @@ export class DrawingController {
   };
 
   changeTurn = () => {
+    if (!this.hasCrossedCutLine) {
+      this.drawingView.displayCutLineWarning(
+        this.drawingModel.state.currentImage
+      );
+      return;
+    }
     const prevCanvas = this.canvas;
     this.drawingView.hideCanvas(this.drawingModel.state.currentImage);
     this.drawingModel.changeTurn(this.canvas);
@@ -87,6 +94,7 @@ export class DrawingController {
     this.prevX = null;
     this.prevY = null;
     this.draw = false;
+    this.hasCrossedCutLine = false;
   };
 
   endDrawing = () => {
@@ -109,8 +117,19 @@ export class DrawingController {
     });
   };
 
+  drawCutLine = () => {
+    this.canvasContext.beginPath();
+    this.canvasContext.moveTo(1, (this.canvas.height / 100) * 94);
+    this.canvasContext.lineTo(
+      this.canvas.width,
+      (this.canvas.height / 100) * 94
+    );
+    this.canvasContext.strokeStyle = "red";
+    this.canvasContext.lineWidth = 1;
+    this.canvasContext.stroke();
+  };
+
   drawLine = (e) => {
-    console.log(this.prevX);
     if (this.prevX == null || this.prevY == null || !this.draw) {
       this.prevX = e.clientX - this.canvas.offsetLeft;
       this.prevY = e.clientY - this.canvas.offsetTop;
@@ -119,6 +138,12 @@ export class DrawingController {
 
     let currentX = e.clientX - this.canvas.offsetLeft;
     let currentY = e.clientY - this.canvas.offsetTop;
+
+    if (!this.hasCrossedCutLine) {
+      if (currentY > (this.canvas.height / 100) * 94) {
+        this.hasCrossedCutLine = true;
+      }
+    }
 
     this.canvasContext.beginPath();
     this.canvasContext.moveTo(this.prevX, this.prevY);
