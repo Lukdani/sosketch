@@ -1,13 +1,18 @@
+const initialState = {
+  id: null,
+  canvas: [],
+  images: 0,
+  totalImages: 3,
+  currentImage: null,
+  date: null,
+  players: [0, 1],
+  playerTurn: null,
+};
+
 export class DrawingModel {
   constructor() {
     this.state = {
-      id: null,
-      canvas: [],
-      images: 0,
-      currentImage: null,
-      date: null,
-      players: [0, 1],
-      playerTurn: null,
+      ...initialState,
     };
   }
 
@@ -18,7 +23,6 @@ export class DrawingModel {
   };
 
   startDrawing = () => {
-    this.state.id = "test";
     this.state.currentImage = 1;
     this.state.playerTurn = 0;
   };
@@ -29,4 +33,8 @@ export class DrawingModel {
     this.state.currentImage = this.state.currentImage + 1;
     this.state.playerTurn = this.state.playerTurn == 0 ? 1 : 0;
   };
+
+  isLastTurn = () => this.state.currentImage === this.state.totalImages;
+
+  resetModel = () => (this.state = { ...initialState });
 }
