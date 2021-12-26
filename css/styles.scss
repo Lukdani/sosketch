@@ -1,9 +1,11 @@
+@import "./bootstrap.scss";
 * {
   box-sizing: border-box;
 }
 
 body {
   margin: 0;
+  background-color: $customBackground;
 }
 
 h1,
@@ -38,7 +40,85 @@ img {
   height: auto;
 }
 
+#drawingContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  min-height: 300px;
+}
+
+#startDrawingButton {
+  font-size: 2.5rem;
+  background-color: $customPrimary;
+  &:hover {
+    transform: scale(1.2);
+  }
+}
+
+#toolbarContainer {
+  .btn:not(.colorButton):not(.widthButton) {
+    margin-right: 0.5rem;
+  }
+  padding: 0.5rem 0;
+  display: flex;
+  justify-content: center;
+  .toolIcon {
+    font-size: 1.5rem;
+    margin-right: 0.25rem;
+  }
+  .toolButton {
+    display: inline-flex;
+    align-items: center;
+  }
+  #chooseWidthButtonIcon {
+    width: 20px;
+  }
+}
 canvas {
-  border: 2px black solid;
+  border: 2px solid $customBlue;
+  background: $customLight;
   display: block;
+  margin: 0.5rem;
+}
+
+#colorButtonPopover,
+#widthButtonPopover {
+  position: relative;
+}
+
+#colorPopover,
+#widthPopover {
+  z-index: 2;
+  border-radius: 0.5rem;
+  border: 1px solid #eee;
+  background-color: white;
+  display: none;
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translate(-50%, 100%);
+}
+
+#widthPopover {
+  .row {
+    width: 100px;
+  }
+  .btn.widthButton {
+    width: 100px !important;
+  }
+}
+
+#colorButtonPopover {
+  .row {
+    width: calc(75px * 3);
+  }
+  .btn {
+    width: 75px;
+    font-size: 1.2rem;
+    &:hover {
+      background-color: #eee;
+    }
+  }
 }

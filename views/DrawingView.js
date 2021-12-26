@@ -3,29 +3,34 @@ import { createElement } from "/sosketch/utils/createElement.js";
 export class DrawingView {
   constructor() {
     this.rootElement = document.getElementById("drawingContainer");
-    this.toolsContainer = createElement("div", ["toolbar"], null);
-    this.rootElement.appendChild(this.toolsContainer);
+    this.toolbarContainer = document.getElementById("toolbarContainer");
+
     this.startDrawingButton = createElement(
       "button",
-      ["primary"],
+      ["btn", "btn-primary", "primary"],
       "startDrawingButton"
     );
     this.startDrawingButton.textContent = "Start!";
-    this.toolsContainer.appendChild(this.startDrawingButton);
+    this.rootElement.appendChild(this.startDrawingButton);
 
-    this.nextTurn = createElement("button", ["primary"], "nextTurnButton");
+    this.nextTurn = createElement(
+      "button",
+      ["btn", "btn-secondary", "primary"],
+      "nextTurnButton"
+    );
     this.nextTurn.textContent = "Next turn!";
-    this.toolsContainer.appendChild(this.nextTurn);
+    this.toolbarContainer.appendChild(this.nextTurn);
   }
 
   addCanvas = (prevCanvas, id) => {
+    this.rootElement.innerHTML = "";
     const newCanvas = createElement(
       "canvas",
       ["drawingCanvas"],
       `canvas-${id}`
     );
-    newCanvas.height = 200;
-    newCanvas.width = 300;
+    newCanvas.height = (60 * window.innerHeight) / 100;
+    newCanvas.width = (80 * window.innerHeight) / 100;
     this.rootElement.appendChild(newCanvas);
   };
 
@@ -44,6 +49,17 @@ export class DrawingView {
   hideCanvas = (id) => {
     const canvas = document.getElementById(`canvas-${id}`);
     canvas.style["display"] = "none";
+  };
+
+  disableNextTurn = (disable) => {
+    const nextTurnButton = document.getElementById("nextTurnButton");
+    if (nextTurnButton)
+      nextTurnButton.style["display"] = disable ? "none" : "inline-block";
+  };
+
+  setFinalDrawingView = () => {
+    const nextTurnButton = document.getElementById("nextTurnButton");
+    if (nextTurnButton) nextTurnButton.textContent = "Finish drawing";
   };
 
   bindStartDrawingButton = (callback) => {

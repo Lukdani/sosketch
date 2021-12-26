@@ -1,14 +1,27 @@
+import { ToolbarModel } from "../models/ToolbarModel.js";
+import { ToolbarView } from "../views/ToolbarView.js";
+import { ToolbarController } from "./toolbarController.js";
+
 export class DrawingController {
   constructor(drawingModel, drawingView) {
     this.drawingModel = drawingModel;
     this.drawingView = drawingView;
     this.drawingView.bindStartDrawingButton(this.startDrawing);
     this.drawingView.bindNextTurnButton(this.changeTurn);
+    this.drawingView.disableNextTurn(true);
     this.canvas = null;
     this.canvasContext = null;
     this.prevX = null;
     this.prevY = null;
     this.draw = false;
+
+    this.toolbarModel = new ToolbarModel();
+    this.toolbarView = new ToolbarView();
+    this.toolbarController = new ToolbarController(
+      this.toolbarModel,
+      this.toolbarView
+    );
+
     window.addEventListener("mousemove", this.drawingOutOfBounds);
   }
 
@@ -24,6 +37,7 @@ export class DrawingController {
   startDrawing = () => {
     this.drawingModel.startDrawing();
     this.drawingView.addCanvas(null, 1);
+    this.drawingView.disableNextTurn(false);
     this.canvas = document.getElementById(
       `canvas-${this.drawingModel.state.currentImage}`
     );
@@ -40,7 +54,11 @@ export class DrawingController {
     this.drawingView.hideCanvas(this.drawingModel.state.currentImage);
     this.drawingModel.changeTurn(this.canvas);
 
+    if (this.drawingModel.state.canvas.length === 2) {
+      this.drawingView.setFinalDrawingView();
+    }
     if (this.drawingModel.state.canvas.length === 3) {
+      this.drawingView.disableNextTurn(true);
       this.endDrawing();
       return;
     }
@@ -58,7 +76,7 @@ export class DrawingController {
     this.canvasContext.drawImage(
       prevCanvas,
       1,
-      180,
+      (this.canvas.height / 100) * 95,
       this.canvas.width,
       this.canvas.height,
       0,
@@ -105,6 +123,8 @@ export class DrawingController {
     this.canvasContext.beginPath();
     this.canvasContext.moveTo(this.prevX, this.prevY);
     this.canvasContext.lineTo(currentX, currentY);
+    this.canvasContext.strokeStyle = this.toolbarController.getSelectedColor();
+    this.canvasContext.lineWidth = this.toolbarController.getSelectedWidth();
     this.canvasContext.stroke();
 
     this.prevX = e.clientX - this.canvas.offsetLeft;
