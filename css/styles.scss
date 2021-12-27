@@ -64,6 +64,7 @@ img {
   padding: 0.5rem 0;
   display: flex;
   justify-content: center;
+  align-items: center;
   .toolIcon {
     font-size: 1.5rem;
     margin-right: 0.25rem;
@@ -71,6 +72,7 @@ img {
   .toolButton {
     display: inline-flex;
     align-items: center;
+    height: 45px;
   }
   #chooseWidthButtonIcon {
     width: 20px;
@@ -83,12 +85,14 @@ canvas {
 }
 
 #colorButtonPopover,
-#widthButtonPopover {
+#widthButtonPopover,
+#toolButtonPopover {
   position: relative;
 }
 
 #colorPopover,
-#widthPopover {
+#widthPopover,
+#toolPopover {
   z-index: 2;
   border-radius: 0.5rem;
   border: 1px solid #eee;
@@ -136,4 +140,10 @@ canvas {
     opacity: 0.8;
     text-align: center;
   }
+}
+
+.submittedImage {
+  width: 100%;
+  height: auto;
+  background-color: white;
 }

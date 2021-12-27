@@ -33,6 +33,9 @@
             <div class="col-12">
                 <div id="drawingContainer"></div>
             </div>
+            <div class="col-12">
+                <div id="imagesContainer"></div>
+            </div>
         </div>
     </div>
     <script src="node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>

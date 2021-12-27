@@ -1,5 +1,5 @@
 export class ToolbarController {
-  constructor(toolbarModel, toolbarView, selectedColor, selectedWidth) {
+  constructor(toolbarModel, toolbarView) {
     this.toolbarModel = toolbarModel;
     this.toolbarView = toolbarView;
     this.toolbarView.setColorButtonColor(this.toolbarModel.getSelectedColor());
@@ -7,16 +7,24 @@ export class ToolbarController {
     // Setup color buttons;
     this.toolbarView.renderColorButtons(
       this.toolbarModel.getColors(),
-      selectedColor
+      this.toolbarModel.getSelectedColor()
     );
     this.toolbarView.bindColorButtons(this.colorSelected);
 
     //Setup width buttons;
     this.toolbarView.renderWidthButtons(
       this.toolbarModel.getWidths(),
-      selectedWidth
+      this.toolbarModel.getSelectedWidth()
     );
     this.toolbarView.bindWidthButtons(this.widthSelected);
+
+    //Setup tool buttons;
+    this.toolbarView.renderToolButtons(
+      this.toolbarModel.getTools(),
+      this.toolbarModel.getSelectedTool()
+    );
+    this.toolbarView.bindToolButtons(this.toolSelected);
+    this.toolbarView.setToolIcon(this.toolbarModel.getSelectedTool());
   }
 
   colorSelected = (selectedColor) => {
@@ -33,9 +41,13 @@ export class ToolbarController {
   };
 
   widthSelected = (selectedWidth) => {
-    console.log(selectedWidth);
     this.toolbarModel.changeWidth(selectedWidth);
     this.toolbarView.setWidthButtonSize(selectedWidth);
+  };
+
+  toolSelected = (selectedTool) => {
+    this.toolbarModel.changeTool(selectedTool);
+    this.toolbarView.setToolIcon(this.toolbarModel.getSelectedTool());
   };
 
   getSelectedWidth = () => {

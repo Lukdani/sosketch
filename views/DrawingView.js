@@ -51,9 +51,7 @@ export class DrawingView {
     );
     newCanvas.height = CANVAS_HEIGHT;
     newCanvas.width = CANVAS_WIDTH;
-    var ctx = newCanvas.getContext("2d");
-    ctx.fillStyle = backgroundColor;
-    ctx.fillRect(0, 0, newCanvas.width, newCanvas.height);
+
     canvasContainer.appendChild(newCanvas);
   };
 

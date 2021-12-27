@@ -8,6 +8,7 @@ export class ToolbarView {
 
     this.colorPopoverOpen = false;
     this.widthPopoverOpen = false;
+    this.toolPopoverOpen = false;
 
     // Color popover;
     this.chooseColorButton = createElement(
@@ -71,6 +72,34 @@ export class ToolbarView {
       "widthPopover"
     );
     this.chooseWidthButton.appendChild(this.widthButtonContainer);
+
+    // Tool popover;
+    this.chooseToolButton = createElement(
+      "button",
+      ["btn", "btn-secondary", "toolButton"],
+      "toolButtonPopover"
+    );
+    this.chooseToolButtonIcon = createElement(
+      "i",
+      ["fas", "fa-dot-circle", "toolIcon"],
+      "toolIcon"
+    );
+    this.chooseToolButtonIcon.style["color"] = "black";
+    this.chooseToolButton.appendChild(this.chooseToolButtonIcon);
+    this.chooseToolButton.addEventListener(
+      "click",
+      this.toggleToolPopoverButton
+    );
+    this.toolsContainer.appendChild(this.chooseToolButton);
+
+    this.toolButtonContainer = createElement(
+      "div",
+      ["toolPopover"],
+      "toolPopover"
+    );
+    this.chooseToolButton.appendChild(this.toolButtonContainer);
+
+    // Popup close listener;
     window.addEventListener("click", this.closePopovers);
   }
 
@@ -198,6 +227,77 @@ export class ToolbarView {
     });
   };
 
+  // Tool selector;
+  toggleToolPopoverButton = () => {
+    const toolPopover = document.getElementById("toolPopover");
+    this.toolPopoverOpen = toolPopover.style.display === "block";
+
+    if (!this.toolPopoverOpen) {
+      toolPopover.style["display"] = "block";
+      this.toolPopoverOpen = !this.toolPopoverOpen;
+    } else if (this.toolPopoverOpen) {
+      toolPopover.style["display"] = "none";
+    }
+  };
+
+  closeToolPopover = () => {
+    const toolPopover = document.getElementById("toolPopover");
+    this.toolPopoverOpen = toolPopover.style.display === "block";
+    if (toolPopover && this.toolPopoverOpen) {
+      toolPopover.style["display"] = "none";
+      this.toolPopoverOpen = !this.toolPopoverOpen;
+    }
+  };
+
+  setToolIcon = (tool) => {
+    console.log(tool);
+    const toolIcon = document.getElementById("toolIcon");
+    const classArray = Array.from(toolIcon.classList);
+    const prevIcon =
+      classArray[
+        classArray.findIndex((classItem) => classItem.includes("fa-"))
+      ];
+    toolIcon.classList.remove(prevIcon);
+    toolIcon.classList.add(tool.icon);
+  };
+
+  renderToolButtons = (tools) => {
+    const toolPopover = document.getElementById("toolPopover");
+    const buttonsRow = createElement("div", ["row", "g-0"], null);
+    toolPopover.appendChild(buttonsRow);
+    tools?.forEach((tool) => {
+      console.log(tool);
+      const buttonContainer = createElement("div", ["col-12"], null);
+      buttonsRow.appendChild(buttonContainer);
+      const toolButton = createElement(
+        "button",
+        ["btn", "toolSelectorButton", "col-12"],
+        null
+      );
+      const toolButtonIcon = createElement("i", ["fas", tool.icon], null);
+      toolButton.appendChild(toolButtonIcon);
+      toolButton.setAttribute("data-tool", tool.label);
+      buttonContainer.appendChild(toolButton);
+    });
+  };
+
+  handleToolButtonClicked = (e, callback) => {
+    const selectedTool = e.currentTarget.getAttribute("data-tool");
+    console.log(selectedTool);
+    callback(selectedTool);
+  };
+
+  bindToolButtons = (callback) => {
+    const toolButtons = document.querySelectorAll(".toolSelectorButton");
+    toolButtons?.forEach((toolButtonItem) => {
+      toolButtonItem.addEventListener("click", (e) =>
+        this.handleToolButtonClicked(e, callback)
+      );
+    });
+  };
+
+  // Helpers
+
   closePopovers = (e) => {
     const clickedId = e.target?.getAttribute("id");
     if (
@@ -213,6 +313,13 @@ export class ToolbarView {
     ) {
       console.log(clickedId + " width");
       this.closeWidthPopover();
+    }
+    if (
+      this.toolPopoverOpen &&
+      !e.target.matches("#toolButtonPopover, #toolButtonPopover *")
+    ) {
+      console.log(clickedId + " width");
+      this.closeToolPopover();
     }
   };
 }

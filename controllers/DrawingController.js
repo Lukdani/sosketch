@@ -4,9 +4,10 @@ import { ToolbarView } from "../views/ToolbarView.js";
 import { ToolbarController } from "./toolbarController.js";
 
 export class DrawingController {
-  constructor(drawingModel, drawingView) {
+  constructor(drawingModel, drawingView, imagesController) {
     this.drawingModel = drawingModel;
     this.drawingView = drawingView;
+    this.imagesController = imagesController;
     this.drawingView.bindStartDrawingButton(this.startDrawing);
     this.drawingView.bindNextTurnButton(this.changeTurn);
     this.drawingView.bindRestartGameButton(this.restartGame);
@@ -46,11 +47,7 @@ export class DrawingController {
 
   startDrawing = () => {
     this.drawingModel.startDrawing();
-    this.drawingView.addCanvas(
-      null,
-      1,
-      this.drawingModel.state.backgroundColor
-    );
+    this.drawingView.addCanvas(null, 1);
     this.drawingView.disableNextTurn(false);
     this.drawingView.disableRestartGame(false);
     this.canvas = document.getElementById(
@@ -83,12 +80,7 @@ export class DrawingController {
       this.endDrawing();
       return;
     }
-    this.drawingView.addCanvas(
-      null,
-      this.drawingModel.state.currentImage,
-      this.drawingModel.state.backgroundColor
-    );
-    console.log(this.drawingModel.state.backgroundColor);
+    this.drawingView.addCanvas(null, this.drawingModel.state.currentImage);
     this.canvas = document.getElementById(
       `canvas-${this.drawingModel.state.currentImage}`
     );
@@ -138,7 +130,7 @@ export class DrawingController {
     const imageId = await postRequest("/sosketch/api/postImage.php", {
       image: imageToPost,
     });
-    console.log(imageId);
+    imagesController.fetchImages();
   };
 
   drawCutLine = () => {
@@ -170,13 +162,28 @@ export class DrawingController {
     }
 
     this.canvasContext.beginPath();
-    this.canvasContext.strokeStyle = this.toolbarController.getSelectedColor();
-    this.canvasContext.lineWidth = this.toolbarController.getSelectedWidth();
-    this.canvasContext.moveTo(this.prevX, this.prevY);
-    this.canvasContext.lineCap = "round";
+    if (this.toolbarModel.getSelectedTool().label === "penTool") {
+      this.canvasContext.globalCompositeOperation = "source-over";
+      this.canvasContext.strokeStyle =
+        this.toolbarController.getSelectedColor();
+      this.canvasContext.lineWidth = this.toolbarController.getSelectedWidth();
+      this.canvasContext.moveTo(this.prevX, this.prevY);
+      this.canvasContext.lineCap = "round";
 
-    this.canvasContext.lineTo(currentX, currentY);
-    this.canvasContext.stroke();
+      this.canvasContext.lineTo(currentX, currentY);
+      this.canvasContext.stroke();
+    } else if (this.toolbarModel.getSelectedTool().label === "eraser") {
+      this.canvasContext.globalCompositeOperation = "destination-out";
+      this.canvasContext.arc(
+        this.prevX,
+        this.prevY,
+        this.toolbarController.getSelectedWidth(),
+        0,
+        Math.PI * 2,
+        false
+      );
+      this.canvasContext.fill();
+    }
 
     this.prevX = e.clientX - this.canvas.offsetLeft;
     this.prevY = e.clientY - this.canvas.offsetTop;

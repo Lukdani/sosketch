@@ -1,9 +1,21 @@
+const tools = [
+  {
+    label: "penTool",
+    icon: "fa-pen",
+  },
+  {
+    label: "eraser",
+    icon: "fa-eraser",
+  },
+];
+
 export class ToolbarModel {
   constructor() {
     this.state = {
       selectedColor: "#000",
       selectedWidth: 2,
-      selectedTool: "draw",
+      selectedTool: tools[0],
+      tools: [...tools],
       colors: [
         { label: "black", hex: "#1D201F" },
         { label: "gray", hex: "#97A7B3" },
@@ -16,7 +28,7 @@ export class ToolbarModel {
         { label: "rose", hex: "#FFD9CE" },
         { label: "pink", hex: "#F7A1C4" },
       ],
-      widths: [1, 2, 3, 4],
+      widths: [1, 2, 3, 8],
     };
   }
 
@@ -40,7 +52,16 @@ export class ToolbarModel {
 
   getSelectedWidth = () => this.state.selectedWidth;
 
+  getTools = () => this.state.tools;
+
   changeTool = (tool) => {
-    this.state.selectedTool = tool;
+    this.state.selectedTool = this.state.tools.find(
+      (toolItem) => toolItem.label === tool
+    );
+    console.log(this.state.selectedTool);
+  };
+
+  getSelectedTool = () => {
+    return this.state.selectedTool;
   };
 }
