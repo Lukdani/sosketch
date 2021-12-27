@@ -3,7 +3,7 @@ import {
   CANVAS_WIDTH,
   FINAL_CANVAS_HEIGHT,
   FINAL_CANVAS_WIDTH,
-} from "../CONSTANTS";
+} from "/sosketch/CONSTANTS.js";
 import { createElement } from "/sosketch/utils/createElement.js";
 
 export class DrawingView {
@@ -36,7 +36,7 @@ export class DrawingView {
     this.toolbarContainer.appendChild(this.restartGame);
   }
 
-  addCanvas = (prevCanvas, id) => {
+  addCanvas = (prevCanvas, id, backgroundColor) => {
     this.rootElement.innerHTML = "";
     const canvasContainer = createElement(
       "span",
@@ -51,6 +51,9 @@ export class DrawingView {
     );
     newCanvas.height = CANVAS_HEIGHT;
     newCanvas.width = CANVAS_WIDTH;
+    var ctx = newCanvas.getContext("2d");
+    ctx.fillStyle = backgroundColor;
+    ctx.fillRect(0, 0, newCanvas.width, newCanvas.height);
     canvasContainer.appendChild(newCanvas);
   };
 

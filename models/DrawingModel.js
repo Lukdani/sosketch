@@ -7,6 +7,7 @@ const initialState = {
   date: null,
   players: [0, 1],
   playerTurn: null,
+  backgroundColor: "#f2ebd5",
 };
 
 export class DrawingModel {

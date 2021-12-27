@@ -3,7 +3,6 @@ export const createElement = (type, classes, id) => {
   if (classes != null && classes.length > 0) {
     classes.forEach((classElement) => {
       element.classList.add(classElement);
-      console.log(element.classList);
     });
   }
   if (id != null) {

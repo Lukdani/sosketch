@@ -1,35 +1,32 @@
 <?php
 require $_SERVER['DOCUMENT_ROOT'] . "/sosketch/settings/init.php";
 
-$imgId;
-$file = $_FILES;
 $postData = json_decode(file_get_contents('php://input'));
 
-$canvasImg = $file["canvasImg"]["tmp_name"];
+$imgId;
+$file = $_FILES;
+$canvasImg2 = $_POST['file'];
+$canvasImg = $_POST["file"];
 
-if (!empty($postData)) {
-  if (isset($postData->customer)) {
+if (!empty($postData->image)) {
     $imgSql =
-      "INSERT INTO images (imgDate) VALUES(:imgDate); SELECT imgId FROM images ORDER BY imgId DESC LIMIT 1";
+      "INSERT INTO images (imgDate) VALUES(:imgDate)";
     $imgBind = [
       ":imgDate" => gmdate("Y-m-d H:i:s"),
     ];
 
-    $imgId = $db->sql($imgSql, $imgBind, false);
+    $db->sql($imgSql, $imgBind, false);
 
-    /*
-    $orderIdSql = "SELECT orderId FROM orders ORDER BY orderId DESC LIMIT 1";
+    $imageIdSql = "SELECT imgId FROM images ORDER BY imgId DESC LIMIT 1";
 
-    $orderId = $db->sql($orderIdSql, null)[0];
-    */
+    $imageId = $db->sql($imageIdSql, null)[0];
+  echo(json_encode($imageId->imgId));
+  if (isset($imageId)) {
+    $db->saveBase64ImagePng($postData->image, $_SERVER['DOCUMENT_ROOT'] . "/sosketch/uploads/submittedImages/", $imageId->imgId);
   }
 
-  if (!empty($canvasImg) && isset($imgId)) {
-    move_uploaded_file($canvasImg, $_SERVER['DOCUMENT_ROOT'] . "/sosketch/uploads/submittedimages" . basename($imgId["name"]));
-  }
 
-  echo json_encode($orderId->orderId);
 } else {
-  echo "TEST 2";
+  //echo "TEST 2";
 }
 ?>

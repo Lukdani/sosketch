@@ -1,5 +1,5 @@
 <?php
-require "classes/classDB.php";
+require $_SERVER['DOCUMENT_ROOT'] ."/sosketch/classes/classDB.php";
 
 define("CONFIG_LIVE", "0"); // 0: Test enviroment || 1: Live enviroment
 

@@ -46,7 +46,11 @@ export class DrawingController {
 
   startDrawing = () => {
     this.drawingModel.startDrawing();
-    this.drawingView.addCanvas(null, 1);
+    this.drawingView.addCanvas(
+      null,
+      1,
+      this.drawingModel.state.backgroundColor
+    );
     this.drawingView.disableNextTurn(false);
     this.drawingView.disableRestartGame(false);
     this.canvas = document.getElementById(
@@ -79,8 +83,12 @@ export class DrawingController {
       this.endDrawing();
       return;
     }
-    this.drawingView.addCanvas(null, this.drawingModel.state.currentImage);
-    console.log(this.drawingModel);
+    this.drawingView.addCanvas(
+      null,
+      this.drawingModel.state.currentImage,
+      this.drawingModel.state.backgroundColor
+    );
+    console.log(this.drawingModel.state.backgroundColor);
     this.canvas = document.getElementById(
       `canvas-${this.drawingModel.state.currentImage}`
     );
@@ -109,7 +117,7 @@ export class DrawingController {
 
   endDrawing = async () => {
     const finalDrawing = this.drawingView.addFinalCanvas();
-    const imageToPost = finalDrawing.toDataURL("image/png");
+
     this.canvasContext = finalDrawing.getContext("2d");
 
     this.drawingModel.state.canvas.forEach((drawing, index) => {
@@ -126,10 +134,10 @@ export class DrawingController {
         finalDrawing.height / 3
       );
     });
-    const imageId = await postRequest(
-      "/sosketch/api/postImage.php",
-      imageToPost
-    );
+    const imageToPost = finalDrawing.toDataURL("image/png");
+    const imageId = await postRequest("/sosketch/api/postImage.php", {
+      image: imageToPost,
+    });
     console.log(imageId);
   };
 
