@@ -9,14 +9,16 @@ export class DrawingController {
     this.drawingView = drawingView;
     this.drawingView.bindStartDrawingButton(this.startDrawing);
     this.drawingView.bindNextTurnButton(this.changeTurn);
+    this.drawingView.bindRestartGameButton(this.restartGame);
     this.drawingView.disableNextTurn(true);
+    this.drawingView.disableRestartGame(true);
     this.canvas = null;
     this.canvasContext = null;
     this.prevX = null;
     this.prevY = null;
     this.draw = false;
 
-    const hasCrossedCutLine = false;
+    this.hasCrossedCutLine = false;
     this.toolbarModel = new ToolbarModel();
     this.toolbarView = new ToolbarView();
     this.toolbarController = new ToolbarController(
@@ -36,23 +38,30 @@ export class DrawingController {
     }
   };
 
+  restartGame = () => {
+    this.drawingModel.resetModel();
+    this.hasCrossedCutLine = false;
+    this.startDrawing();
+  };
+
   startDrawing = () => {
     this.drawingModel.startDrawing();
     this.drawingView.addCanvas(null, 1);
     this.drawingView.disableNextTurn(false);
+    this.drawingView.disableRestartGame(false);
     this.canvas = document.getElementById(
       `canvas-${this.drawingModel.state.currentImage}`
     );
 
     this.canvasContext = this.canvas.getContext("2d");
-
+    this.canvasContext.translate(0.5, 0.5);
     this.canvas.addEventListener("mousemove", this.drawLine);
     this.canvas.addEventListener("mousedown", (e) => (this.draw = true));
     this.canvas.addEventListener("mouseup", (e) => (this.draw = false));
   };
 
   changeTurn = () => {
-    if (!this.hasCrossedCutLine) {
+    if (!this.hasCrossedCutLine && !this.drawingModel.isLastTurn()) {
       this.drawingView.displayCutLineWarning(
         this.drawingModel.state.currentImage
       );
@@ -84,7 +93,7 @@ export class DrawingController {
     this.canvasContext.drawImage(
       prevCanvas,
       1,
-      (this.canvas.height / 100) * 95,
+      (this.canvas.height / 100) * 94,
       this.canvas.width,
       this.canvas.height,
       0,
@@ -153,10 +162,12 @@ export class DrawingController {
     }
 
     this.canvasContext.beginPath();
-    this.canvasContext.moveTo(this.prevX, this.prevY);
-    this.canvasContext.lineTo(currentX, currentY);
     this.canvasContext.strokeStyle = this.toolbarController.getSelectedColor();
     this.canvasContext.lineWidth = this.toolbarController.getSelectedWidth();
+    this.canvasContext.moveTo(this.prevX, this.prevY);
+    this.canvasContext.lineCap = "round";
+
+    this.canvasContext.lineTo(currentX, currentY);
     this.canvasContext.stroke();
 
     this.prevX = e.clientX - this.canvas.offsetLeft;

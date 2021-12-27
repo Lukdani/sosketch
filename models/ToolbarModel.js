@@ -2,7 +2,7 @@ export class ToolbarModel {
   constructor() {
     this.state = {
       selectedColor: "#000",
-      selectedWidth: 1,
+      selectedWidth: 2,
       selectedTool: "draw",
       colors: [
         { label: "black", hex: "#1D201F" },

@@ -1,3 +1,9 @@
+import {
+  CANVAS_HEIGHT,
+  CANVAS_WIDTH,
+  FINAL_CANVAS_HEIGHT,
+  FINAL_CANVAS_WIDTH,
+} from "../CONSTANTS";
 import { createElement } from "/sosketch/utils/createElement.js";
 
 export class DrawingView {
@@ -20,6 +26,14 @@ export class DrawingView {
     );
     this.nextTurn.textContent = "Next turn!";
     this.toolbarContainer.appendChild(this.nextTurn);
+
+    this.restartGame = createElement(
+      "button",
+      ["btn", "btn-secondary", "primary"],
+      "restartGameButton"
+    );
+    this.restartGame.textContent = "Reset";
+    this.toolbarContainer.appendChild(this.restartGame);
   }
 
   addCanvas = (prevCanvas, id) => {
@@ -35,8 +49,8 @@ export class DrawingView {
       ["drawingCanvas"],
       `canvas-${id}`
     );
-    newCanvas.height = (60 * window.innerHeight) / 100;
-    newCanvas.width = (80 * window.innerHeight) / 100;
+    newCanvas.height = CANVAS_HEIGHT;
+    newCanvas.width = CANVAS_WIDTH;
     canvasContainer.appendChild(newCanvas);
   };
 
@@ -46,8 +60,8 @@ export class DrawingView {
       ["drawingCanvas", "finalCanvas"],
       `canvas-final`
     );
-    newCanvas.height = 400;
-    newCanvas.width = 600;
+    newCanvas.height = FINAL_CANVAS_HEIGHT;
+    newCanvas.width = FINAL_CANVAS_WIDTH;
     this.rootElement.appendChild(newCanvas);
     return document.getElementById("canvas-final");
   };
@@ -61,6 +75,12 @@ export class DrawingView {
     const nextTurnButton = document.getElementById("nextTurnButton");
     if (nextTurnButton)
       nextTurnButton.style["display"] = disable ? "none" : "inline-block";
+  };
+
+  disableRestartGame = (disable) => {
+    const restartGameButton = document.getElementById("restartGameButton");
+    if (restartGameButton)
+      restartGameButton.style["display"] = disable ? "none" : "inline-block";
   };
 
   setFinalDrawingView = () => {
@@ -100,5 +120,13 @@ export class DrawingView {
     document.getElementById("nextTurnButton").addEventListener("click", (e) => {
       callback();
     });
+  };
+
+  bindRestartGameButton = (callback) => {
+    document
+      .getElementById("restartGameButton")
+      .addEventListener("click", (e) => {
+        callback();
+      });
   };
 }
