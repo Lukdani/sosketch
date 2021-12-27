@@ -1,4 +1,5 @@
 import { ToolbarModel } from "../models/ToolbarModel.js";
+import { postRequest } from "../utils/postRequest.js";
 import { ToolbarView } from "../views/ToolbarView.js";
 import { ToolbarController } from "./toolbarController.js";
 
@@ -97,8 +98,9 @@ export class DrawingController {
     this.hasCrossedCutLine = false;
   };
 
-  endDrawing = () => {
+  endDrawing = async () => {
     const finalDrawing = this.drawingView.addFinalCanvas();
+    const imageToPost = finalDrawing.toDataURL("image/png");
     this.canvasContext = finalDrawing.getContext("2d");
 
     this.drawingModel.state.canvas.forEach((drawing, index) => {
@@ -115,6 +117,11 @@ export class DrawingController {
         finalDrawing.height / 3
       );
     });
+    const imageId = await postRequest(
+      "/sosketch/api/postImage.php",
+      imageToPost
+    );
+    console.log(imageId);
   };
 
   drawCutLine = () => {
