@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
 
-    <title>Wow, so Sketch</title>
+    <title>Wow, so sketchy</title>
 
     <meta name="robots" content="All">
     <meta name="author" content="Udgiver">
@@ -26,7 +26,13 @@
     <div class="container">
         <div class="row">
             <div class="col-12">
-                <div id="toolbarContainer"></div>
+                <div id="topbar" class="row">
+                    <div class="col-12 col-lg-auto">
+                        <img class="brand" src="/sosketch/images/logo.png" />
+                    </div>
+                    <div class="col" id="toolbarContainer"></div>
+                    <span>
+                </div>
             </div>
         </div>
         <div class="row">

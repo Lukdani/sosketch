@@ -8,11 +8,7 @@ export class DrawingController {
     this.drawingModel = drawingModel;
     this.drawingView = drawingView;
     this.imagesController = imagesController;
-    this.drawingView.bindStartDrawingButton(this.startDrawing);
-    this.drawingView.bindNextTurnButton(this.changeTurn);
-    this.drawingView.bindRestartGameButton(this.restartGame);
-    this.drawingView.disableNextTurn(true);
-    this.drawingView.disableRestartGame(true);
+
     this.canvas = null;
     this.canvasContext = null;
     this.prevX = null;
@@ -26,6 +22,13 @@ export class DrawingController {
       this.toolbarModel,
       this.toolbarView
     );
+
+    this.drawingView.renderGameButtons();
+    this.drawingView.bindStartDrawingButton(this.startDrawing);
+    this.drawingView.bindNextTurnButton(this.changeTurn);
+    this.drawingView.bindRestartGameButton(this.restartGame);
+    this.drawingView.disableNextTurn(true);
+    this.drawingView.disableRestartGame(true);
 
     window.addEventListener("mousemove", this.drawingOutOfBounds);
   }

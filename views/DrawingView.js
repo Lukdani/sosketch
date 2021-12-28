@@ -10,7 +10,15 @@ export class DrawingView {
   constructor() {
     this.rootElement = document.getElementById("drawingContainer");
     this.toolbarContainer = document.getElementById("toolbarContainer");
+  }
 
+  renderGameButtons = () => {
+    const gameButtonsContainer = createElement(
+      "span",
+      ["gameButtonsContainer"],
+      ""
+    );
+    this.toolbarContainer.appendChild(gameButtonsContainer);
     this.startDrawingButton = createElement(
       "button",
       ["btn", "btn-primary", "primary"],
@@ -21,20 +29,20 @@ export class DrawingView {
 
     this.nextTurn = createElement(
       "button",
-      ["btn", "btn-secondary", "primary"],
+      ["btn", "btn-primary"],
       "nextTurnButton"
     );
-    this.nextTurn.textContent = "Next turn!";
-    this.toolbarContainer.appendChild(this.nextTurn);
+    this.nextTurn.textContent = "Next";
+    gameButtonsContainer.appendChild(this.nextTurn);
 
     this.restartGame = createElement(
       "button",
-      ["btn", "btn-secondary", "primary"],
+      ["btn", "btn-danger", "primary"],
       "restartGameButton"
     );
     this.restartGame.textContent = "Reset";
-    this.toolbarContainer.appendChild(this.restartGame);
-  }
+    gameButtonsContainer.appendChild(this.restartGame);
+  };
 
   addCanvas = (prevCanvas, id, backgroundColor) => {
     this.rootElement.innerHTML = "";
