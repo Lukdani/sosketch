@@ -57,7 +57,6 @@ export class ToolbarView {
       ["fas", "fa-circle"],
       "chooseWidthButtonIcon"
     );
-    this.chooseWidthButtonIcon.style["color"] = "black";
     this.chooseWidthButton.appendChild(this.chooseWidthButtonToolIcon);
     this.chooseWidthButton.appendChild(this.chooseWidthButtonIcon);
     this.chooseWidthButton.addEventListener(
@@ -84,7 +83,7 @@ export class ToolbarView {
       ["fas", "fa-dot-circle", "toolIcon"],
       "toolIcon"
     );
-    this.chooseToolButtonIcon.style["color"] = "black";
+
     this.chooseToolButton.appendChild(this.chooseToolButtonIcon);
     this.chooseToolButton.addEventListener(
       "click",

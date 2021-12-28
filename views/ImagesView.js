@@ -8,6 +8,11 @@ export class ImagesView {
   renderImages = (images) => {
     if (images?.length > 0) {
       this.rootElement.innerHTML = "";
+
+      const imagesHeader = createElement("h4", ["mb-2"], null);
+      imagesHeader.textContent = "Latest contributions";
+      this.rootElement.appendChild(imagesHeader);
+
       const imagesRow = createElement("div", ["row"], null);
       this.rootElement.appendChild(imagesRow);
       images.forEach((imageItem) => {

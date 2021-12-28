@@ -11,19 +11,25 @@ $customSecondary: #bf2c53;
 $customBackground: #382f59;
 $customLight: #f2ebd5;
 $customBlue: #3b82bf;
+$customDark: #2e2929;
+
+$headerFont: "Single Day", cursive;
+$fontFamily: "Roboto", sans-serif;
 
 $custom-colors: (
   "customPrimary": #39bf4d,
   "customSecondary": #bf2c53,
   "customBackground": #382f59,
   "customLight": #f2ebd5,
-  "customBlue": #3b82bf,
+  "customBlue": $customBlue,
+  "customDark": $customDark,
 );
 
 $custom-colors: (
   "primary": $customPrimary,
   "secondary": $customSecondary,
   "light": $customLight,
+  "dark": $customDark,
 );
 $theme-colors: map-merge($theme-colors, $custom-colors);
 

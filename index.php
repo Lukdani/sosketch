@@ -18,6 +18,12 @@
         integrity="sha512-Fo3rlrZj/k7ujTnHg4CGR2D7kSs0v4LLanw2qksYuRlEzO+tcaEPQogQ0KaoGN26/zrn20ImR1DfuLWnOo7aBA=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
 
+    <!-- Google fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&family=Single+Day&display=swap"
+        rel="stylesheet">
+
 
     <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
@@ -39,10 +45,17 @@
             <div class="col-12">
                 <div id="drawingContainer"></div>
             </div>
+        </div>
+    </div>
+    <div class="container-fluid">
+        <div class="row imagesRow">
             <div class="col-12">
                 <div id="imagesContainer"></div>
             </div>
         </div>
+    </div>
+
+    </div>
     </div>
     <script src="node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script type="module" src="/sosketch/init.js"></script>
