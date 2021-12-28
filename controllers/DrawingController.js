@@ -56,9 +56,21 @@ export class DrawingController {
 
     this.canvasContext = this.canvas.getContext("2d");
     this.canvasContext.translate(0.5, 0.5);
+
     this.canvas.addEventListener("mousemove", this.drawLine);
     this.canvas.addEventListener("mousedown", (e) => (this.draw = true));
     this.canvas.addEventListener("mouseup", (e) => (this.draw = false));
+
+    this.canvas.addEventListener("touchstart", (e) => (this.draw = true));
+    this.canvas.addEventListener("touchmove", (e) => {
+      var touch = e.touches[0];
+      var mouseEvent = new MouseEvent("mousemove", {
+        clientX: touch.clientX,
+        clientY: touch.clientY,
+      });
+      this.canvas.dispatchEvent(mouseEvent);
+    });
+    this.canvas.addEventListener("touchend", (e) => (this.draw = false));
   };
 
   changeTurn = () => {
@@ -146,6 +158,8 @@ export class DrawingController {
   };
 
   drawLine = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
     if (this.prevX == null || this.prevY == null || !this.draw) {
       this.prevX = e.clientX - this.canvas.offsetLeft;
       this.prevY = e.clientY - this.canvas.offsetTop;
