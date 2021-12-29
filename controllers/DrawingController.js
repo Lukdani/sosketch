@@ -36,7 +36,6 @@ export class DrawingController {
   drawingOutOfBounds = (e) => {
     if (this.draw) {
       if (!e.target.classList.contains("drawingCanvas")) {
-        console.log(e.target);
         this.draw = false;
       }
     }
@@ -50,9 +49,11 @@ export class DrawingController {
 
   startDrawing = () => {
     this.drawingModel.startDrawing();
+
     this.drawingView.addCanvas(null, 1);
     this.drawingView.disableNextTurn(false);
     this.drawingView.disableRestartGame(false);
+
     this.canvas = document.getElementById(
       `canvas-${this.drawingModel.state.currentImage}`
     );
@@ -83,6 +84,7 @@ export class DrawingController {
       );
       return;
     }
+
     const prevCanvas = this.canvas;
     this.drawingView.hideCanvas(this.drawingModel.state.currentImage);
     this.drawingModel.changeTurn(this.canvas);
@@ -145,7 +147,7 @@ export class DrawingController {
     const imageId = await postRequest("/sosketch/api/postImage.php", {
       image: imageToPost,
     });
-    imagesController.fetchImages();
+    this.imagesController.fetchImages();
   };
 
   drawCutLine = () => {
