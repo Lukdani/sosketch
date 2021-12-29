@@ -2,10 +2,12 @@ const tools = [
   {
     label: "penTool",
     icon: "fa-pen",
+    color: "cornflowerblue",
   },
   {
     label: "eraser",
     icon: "fa-eraser",
+    color: "#fd13b4",
   },
 ];
 
@@ -19,14 +21,16 @@ export class ToolbarModel {
       colors: [
         { label: "black", hex: "#1D201F" },
         { label: "gray", hex: "#97A7B3" },
+        { label: "brown", hex: "brown" },
         { label: "red", hex: "#DB162F" },
-        { lable: "green", hex: "#218380" },
-        { label: "mageneta", hex: "#8F2D56" },
-        { label: "skyBlue", hex: "#73D2DE" },
-        { label: "yellow", hex: "#FBD87F  " },
-        { label: "blue", hex: "#30C5FF" },
-        { label: "rose", hex: "#FFD9CE" },
         { label: "pink", hex: "#F7A1C4" },
+        { label: "mageneta", hex: "#8F2D56" },
+        { lable: "green", hex: "#218380" },
+        { label: "skyBlue", hex: "#73D2DE" },
+        { label: "blue", hex: "#30C5FF" },
+        { label: "yellow", hex: "#FBD87F" },
+        { label: "orange", hex: "orange" },
+        { label: "rose", hex: "#FFD9CE" },
       ],
       widths: [1, 4, 5, 10, 20, 30],
     };

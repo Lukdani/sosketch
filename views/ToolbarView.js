@@ -249,13 +249,13 @@ export class ToolbarView {
   };
 
   setToolIcon = (tool) => {
-    console.log(tool);
     const toolIcon = document.getElementById("toolIcon");
     const classArray = Array.from(toolIcon.classList);
     const prevIcon =
       classArray[
         classArray.findIndex((classItem) => classItem.includes("fa-"))
       ];
+    toolIcon.style.color = tool.color;
     toolIcon.classList.remove(prevIcon);
     toolIcon.classList.add(tool.icon);
   };
@@ -274,6 +274,7 @@ export class ToolbarView {
         null
       );
       const toolButtonIcon = createElement("i", ["fas", tool.icon], null);
+      toolButton.style.color = tool.color;
       toolButton.appendChild(toolButtonIcon);
       toolButton.setAttribute("data-tool", tool.label);
       buttonContainer.appendChild(toolButton);

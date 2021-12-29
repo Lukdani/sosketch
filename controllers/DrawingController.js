@@ -16,7 +16,7 @@ export class DrawingController {
     this.prevY = null;
     this.draw = false;
 
-    //
+    // To keep track of if the cut line has been crossed;
     this.hasCrossedCutLine = false;
 
     this.toolbarModel = new ToolbarModel();
@@ -26,13 +26,17 @@ export class DrawingController {
       this.toolbarView
     );
 
+    // "Next" and "Reset" buttons;
     this.drawingView.renderGameButtons();
     this.drawingView.bindStartDrawingButton(this.startDrawing);
     this.drawingView.bindNextTurnButton(this.changeTurn);
     this.drawingView.bindRestartGameButton(this.restartGame);
+
+    // These buttons should not be displayed before the game has started;
     this.drawingView.disableNextTurn(true);
     this.drawingView.disableRestartGame(true);
 
+    // Disabled drawing, so the drawing doesn't continue when the cursor re-enters the canvas.
     window.addEventListener("mousemove", this.drawingOutOfBounds);
   }
 
@@ -56,25 +60,16 @@ export class DrawingController {
     this.startDrawing();
   };
 
-  startDrawing = () => {
-    this.drawingModel.startDrawing();
-
-    this.drawingView.addCanvas(null, 1);
-    this.drawingView.disableNextTurn(false);
-    this.drawingView.disableRestartGame(false);
-
-    this.canvas = document.getElementById(
-      `canvas-${this.drawingModel.state.currentImage}`
-    );
-
-    this.canvasContext = this.canvas.getContext("2d");
-    this.canvasContext.translate(0.5, 0.5);
-
+  // Appends the needed event listeners to draw based on user mouse events;
+  appendDrawListeners = () => {
     this.canvas.addEventListener("mousemove", this.drawLine);
     this.canvas.addEventListener("mousedown", (e) => (this.draw = true));
     this.canvas.addEventListener("mouseup", (e) => (this.draw = false));
 
     this.canvas.addEventListener("touchstart", (e) => (this.draw = true));
+
+    // Needed for mobile support.
+    // It changes the touch move into a mouse event and dispatches this to the canvas.
     this.canvas.addEventListener("touchmove", (e) => {
       var touch = e.touches[0];
       var mouseEvent = new MouseEvent("mousemove", {
@@ -86,7 +81,26 @@ export class DrawingController {
     this.canvas.addEventListener("touchend", (e) => (this.draw = false));
   };
 
+  startDrawing = () => {
+    this.drawingModel.startDrawing();
+
+    this.drawingView.addCanvas(null, 1);
+
+    this.drawingView.disableNextTurn(false);
+    this.drawingView.disableRestartGame(false);
+
+    this.canvas = document.getElementById(
+      `canvas-${this.drawingModel.state.currentImage}`
+    );
+
+    this.canvasContext = this.canvas.getContext("2d");
+    this.canvasContext.translate(0.5, 0.5);
+
+    this.appendDrawListeners();
+  };
+
   changeTurn = () => {
+    // Show warning if user did not cross the cut line;
     if (!this.hasCrossedCutLine && !this.drawingModel.isLastTurn()) {
       this.drawingView.displayCutLineWarning(
         this.drawingModel.state.currentImage
@@ -112,10 +126,9 @@ export class DrawingController {
     );
     this.canvasContext = this.canvas.getContext("2d");
 
-    this.canvas.addEventListener("mousemove", this.drawLine);
-    this.canvas.addEventListener("mousedown", (e) => (this.draw = true));
-    this.canvas.addEventListener("mouseup", (e) => (this.draw = false));
+    this.appendDrawListeners();
 
+    // Adds previous images to the new canvas, so the next drawer knows where to begin;
     this.canvasContext.drawImage(
       prevCanvas,
       0,
@@ -171,8 +184,10 @@ export class DrawingController {
   };
 
   drawLine = (e) => {
+    // Attempt to hinder page scrolling etc.;
     e.preventDefault();
     e.stopPropagation();
+
     if (this.prevX == null || this.prevY == null || !this.draw) {
       this.prevX = e.clientX - this.canvas.offsetLeft;
       this.prevY = e.clientY - this.canvas.offsetTop;
@@ -189,6 +204,8 @@ export class DrawingController {
     }
 
     this.canvasContext.beginPath();
+
+    // Pen tool;
     if (this.toolbarModel.getSelectedTool().label === "penTool") {
       this.canvasContext.globalCompositeOperation = "source-over";
       this.canvasContext.strokeStyle =
@@ -199,7 +216,10 @@ export class DrawingController {
 
       this.canvasContext.lineTo(currentX, currentY);
       this.canvasContext.stroke();
-    } else if (this.toolbarModel.getSelectedTool().label === "eraser") {
+    }
+
+    // Eraser tool;
+    else if (this.toolbarModel.getSelectedTool().label === "eraser") {
       this.canvasContext.globalCompositeOperation = "destination-out";
       this.canvasContext.arc(
         this.prevX,

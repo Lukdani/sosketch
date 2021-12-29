@@ -23,14 +23,12 @@ $custom-colors: (
   "customLight": #f2ebd5,
   "customBlue": $customBlue,
   "customDark": $customDark,
-);
-
-$custom-colors: (
   "primary": $customPrimary,
   "secondary": $customSecondary,
   "light": $customLight,
   "dark": $customDark,
 );
+
 $theme-colors: map-merge($theme-colors, $custom-colors);
 
 @import "../node_modules/bootstrap/scss/bootstrap";

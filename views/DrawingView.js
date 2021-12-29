@@ -4,6 +4,7 @@ import {
   FINAL_CANVAS_HEIGHT,
   FINAL_CANVAS_WIDTH,
 } from "/sosketch/CONSTANTS.js";
+
 import { createElement } from "/sosketch/utils/createElement.js";
 
 export class DrawingView {
