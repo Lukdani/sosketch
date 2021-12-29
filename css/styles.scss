@@ -71,10 +71,32 @@ img {
     margin-top: 0;
   }
 }
+
+.instructions {
+  h2 {
+    font-size: 2rem;
+    text-align: center;
+    color: $customPrimary;
+    font-family: $headerFont;
+  }
+  ul {
+    list-style-position: outside;
+  }
+  li {
+    &:not(:last-of-type) {
+      padding-bottom: 0.5rem;
+    }
+    @media (min-width: 992px) {
+      font-size: 1.2rem;
+    }
+  }
+  color: $customLight;
+}
+
 #startDrawingButton {
   font-size: 2.5rem;
   background-color: $customPrimary;
-  margin: 2rem 0;
+  margin: 0.5rem 0;
   &:hover {
     transform: scale(1.2);
   }

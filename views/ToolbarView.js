@@ -188,7 +188,7 @@ export class ToolbarView {
 
   setWidthButtonSize = (fontSize) => {
     const widthButtonICon = document.getElementById("chooseWidthButtonIcon");
-    widthButtonICon.style["font-size"] = `${(2 + +fontSize) / 6}rem`;
+    widthButtonICon.style["font-size"] = `${(10 + +fontSize) / 30}rem`;
   };
 
   renderWidthButtons = (widths) => {
@@ -204,7 +204,7 @@ export class ToolbarView {
         null
       );
       const widthButtonIcon = createElement("i", ["fas", "fa-circle"], null);
-      widthButtonIcon.style["font-size"] = `${width * 6 + 5}px`;
+      widthButtonIcon.style["font-size"] = `${width * 2 + 5}px`;
       widthButton.appendChild(widthButtonIcon);
       widthButton.setAttribute("data-width", width);
       buttonContainer.appendChild(widthButton);

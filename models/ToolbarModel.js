@@ -28,7 +28,7 @@ export class ToolbarModel {
         { label: "rose", hex: "#FFD9CE" },
         { label: "pink", hex: "#F7A1C4" },
       ],
-      widths: [1, 4, 6, 10, 20],
+      widths: [1, 4, 5, 10, 20, 30],
     };
   }
 
