@@ -11,11 +11,14 @@ export class DrawingController {
 
     this.canvas = null;
     this.canvasContext = null;
+
     this.prevX = null;
     this.prevY = null;
     this.draw = false;
 
+    //
     this.hasCrossedCutLine = false;
+
     this.toolbarModel = new ToolbarModel();
     this.toolbarView = new ToolbarView();
     this.toolbarController = new ToolbarController(
@@ -42,6 +45,12 @@ export class DrawingController {
   };
 
   restartGame = () => {
+    const proceed = window.confirm(
+      "Are you sure you want to delete all pieces of the drawing and start over?"
+    );
+    if (!proceed) {
+      return;
+    }
     this.drawingModel.resetModel();
     this.hasCrossedCutLine = false;
     this.startDrawing();
@@ -109,7 +118,7 @@ export class DrawingController {
 
     this.canvasContext.drawImage(
       prevCanvas,
-      1,
+      0,
       (this.canvas.height / 100) * 94,
       this.canvas.width,
       this.canvas.height,
@@ -130,13 +139,12 @@ export class DrawingController {
     this.canvasContext = finalDrawing.getContext("2d");
 
     this.drawingModel.state.canvas.forEach((drawing, index) => {
-      console.log(drawing);
       this.canvasContext.drawImage(
         drawing,
         0,
-        0,
+        (drawing.height / 100) * 6,
         drawing.width,
-        drawing.height,
+        (drawing.height / 100) * 94,
         0,
         index * (finalDrawing.height / 3),
         finalDrawing.width,
