@@ -3,7 +3,11 @@ import {
   CANVAS_WIDTH,
   FINAL_CANVAS_HEIGHT,
   FINAL_CANVAS_WIDTH,
-} from "/sosketch/CONSTANTS.js";
+  CANVAS_CSS_HEIGHT,
+  CANVAS_CSS_WIDTH,
+  FINAL_CSS_CANVAS_WIDTH,
+  FINAL_CS__CANVAS_HEIGHT,
+} from "../CONSTANTS.js";
 
 import { createElement } from "/sosketch/utils/createElement.js";
 
@@ -14,10 +18,16 @@ export class DrawingView {
   }
 
   renderGameButtons = () => {
+    const prevGameButtonContainer = document.getElementById(
+      "gameButtonContainer"
+    );
+    if (prevGameButtonContainer) {
+      prevGameButtonContainer.remove();
+    }
     const gameButtonsContainer = createElement(
       "span",
       ["gameButtonsContainer"],
-      ""
+      "gameButtonContainer"
     );
     this.toolbarContainer.appendChild(gameButtonsContainer);
     this.startDrawingButton = createElement(
@@ -60,6 +70,8 @@ export class DrawingView {
     );
     newCanvas.height = CANVAS_HEIGHT;
     newCanvas.width = CANVAS_WIDTH;
+    newCanvas.style["height"] = `${CANVAS_CSS_HEIGHT}px`;
+    newCanvas.style["width"] = `${CANVAS_CSS_WIDTH}px`;
 
     canvasContainer.appendChild(newCanvas);
   };
@@ -72,6 +84,9 @@ export class DrawingView {
     );
     newCanvas.height = FINAL_CANVAS_HEIGHT;
     newCanvas.width = FINAL_CANVAS_WIDTH;
+    newCanvas.style.height = FINAL_CS__CANVAS_HEIGHT;
+    newCanvas.style.width = FINAL_CSS_CANVAS_WIDTH;
+
     this.rootElement.appendChild(newCanvas);
     return document.getElementById("canvas-final");
   };
@@ -103,14 +118,13 @@ export class DrawingView {
     console.log(canvas.getBoundingClientRect().y);
     const warning = createElement("p", ["cutlineWarning"], null);
     warning.style.top = `${
-      (canvas.getBoundingClientRect().height / 100) * 94 +
-      canvas.getBoundingClientRect().y -
-      1
+      (CANVAS_CSS_HEIGHT / 100) * 94 + canvas.getBoundingClientRect().y - 1
     }px`;
     warning.style.transform = "translateY(-100%)";
     warning.style.width = `${canvas.getBoundingClientRect().width}px`;
     const warningText = createElement("span", null, null);
-    warningText.innerHTML = "Draw below <br> this line!";
+    warningText.innerHTML =
+      "Draw below this line! <br> (so the next person knows where to begin)";
     warning.appendChild(warningText);
 
     const warningIcon = createElement("i", ["fas", "fa-arrow-down"], null);

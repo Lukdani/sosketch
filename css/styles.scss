@@ -83,11 +83,11 @@ img {
     list-style-position: outside;
   }
   li {
+    font-size: 0.9rem;
     &:not(:last-of-type) {
       padding-bottom: 0.5rem;
     }
     @media (min-width: 992px) {
-      font-size: 1.2rem;
     }
   }
   color: $customLight;

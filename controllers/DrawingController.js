@@ -1,7 +1,13 @@
+import {
+  CANVAS_CSS_HEIGHT,
+  CANVAS_CSS_WIDTH,
+  CANVAS_HEIGHT,
+  CANVAS_WIDTH,
+} from "../CONSTANTS.js";
 import { ToolbarModel } from "../models/ToolbarModel.js";
 import { postRequest } from "../utils/postRequest.js";
 import { ToolbarView } from "../views/ToolbarView.js";
-import { ToolbarController } from "./toolbarController.js";
+import { ToolbarController } from "./ToolbarController.js";
 
 export class DrawingController {
   constructor(drawingModel, drawingView, imagesController) {
@@ -14,6 +20,7 @@ export class DrawingController {
 
     this.prevX = null;
     this.prevY = null;
+
     this.draw = false;
 
     // To keep track of if the cut line has been crossed;
@@ -57,28 +64,60 @@ export class DrawingController {
     }
     this.drawingModel.resetModel();
     this.hasCrossedCutLine = false;
+    this.drawingView.renderGameButtons();
     this.startDrawing();
   };
 
-  // Appends the needed event listeners to draw based on user mouse events;
-  appendDrawListeners = () => {
-    this.canvas.addEventListener("mousemove", this.drawLine);
-    this.canvas.addEventListener("mousedown", (e) => (this.draw = true));
-    this.canvas.addEventListener("mouseup", (e) => (this.draw = false));
-
-    this.canvas.addEventListener("touchstart", (e) => (this.draw = true));
-
-    // Needed for mobile support.
-    // It changes the touch move into a mouse event and dispatches this to the canvas.
-    this.canvas.addEventListener("touchmove", (e) => {
-      var touch = e.touches[0];
-      var mouseEvent = new MouseEvent("mousemove", {
-        clientX: touch.clientX,
-        clientY: touch.clientY,
+  remapTouchEvent = (touchEventType, mouseEventType) => {
+    this.canvas.addEventListener(touchEventType, (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      let touch;
+      if (touchEventType === "touchend") {
+        touch = e.changedTouches[0];
+      } else {
+        touch = e.touches[0];
+      }
+      var mouseEvent = new MouseEvent(mouseEventType, {
+        clientX: touch?.clientX,
+        clientY: touch?.clientY,
       });
       this.canvas.dispatchEvent(mouseEvent);
     });
-    this.canvas.addEventListener("touchend", (e) => (this.draw = false));
+  };
+  // Appends the needed event listeners to draw based on user mouse events;
+  appendDrawListeners = () => {
+    this.canvas.addEventListener("mousemove", this.drawLine, false);
+    this.canvas.addEventListener(
+      "mousedown",
+      (e) => {
+        const coordinates = this.calculateXandY(e);
+
+        this.prevX = coordinates.x;
+        this.prevY = coordinates.y;
+        this.draw = true;
+      },
+      false
+    );
+    this.canvas.addEventListener("mouseup", () => (this.draw = false), false);
+
+    // Needed for mobile support.
+    // It changes the touch move into a mouse event and dispatches this to the canvas.
+    this.remapTouchEvent("touchmove", "mousemove");
+    this.remapTouchEvent("touchstart", "mousedown");
+    this.remapTouchEvent("touchend", "mouseup");
+  };
+
+  calculateXandY = (mouseEvent) => {
+    var clientOffSet = this.canvas.getBoundingClientRect();
+    let offSetLeft = clientOffSet.left;
+    let offSetTop = clientOffSet.top;
+
+    let clientX =
+      (mouseEvent.clientX - offSetLeft) * (CANVAS_WIDTH / CANVAS_CSS_WIDTH);
+    let clientY =
+      (mouseEvent.clientY - offSetTop) * (CANVAS_HEIGHT / CANVAS_CSS_HEIGHT);
+    return { x: clientX, y: clientY };
   };
 
   startDrawing = () => {
@@ -132,13 +171,13 @@ export class DrawingController {
     this.canvasContext.drawImage(
       prevCanvas,
       0,
-      (this.canvas.height / 100) * 94,
-      this.canvas.width,
-      this.canvas.height,
+      (prevCanvas.height / 100) * 94,
+      prevCanvas.width,
+      (prevCanvas.height / 100) * 6,
       0,
       0,
       this.canvas.width,
-      this.canvas.height
+      (prevCanvas.height / 100) * 6
     );
     this.prevX = null;
     this.prevY = null;
@@ -155,7 +194,7 @@ export class DrawingController {
       this.canvasContext.drawImage(
         drawing,
         0,
-        (drawing.height / 100) * 6,
+        0,
         drawing.width,
         (drawing.height / 100) * 94,
         0,
@@ -184,18 +223,20 @@ export class DrawingController {
   };
 
   drawLine = (e) => {
+    const coordinates = this.calculateXandY(e);
+
     // Attempt to hinder page scrolling etc.;
     e.preventDefault();
     e.stopPropagation();
 
     if (this.prevX == null || this.prevY == null || !this.draw) {
-      this.prevX = e.clientX - this.canvas.offsetLeft;
-      this.prevY = e.clientY - this.canvas.offsetTop;
+      this.prevX = coordinates.x;
+      this.prevY = coordinates.y;
       return;
     }
 
-    let currentX = e.clientX - this.canvas.offsetLeft;
-    let currentY = e.clientY - this.canvas.offsetTop;
+    let currentX = coordinates.x;
+    let currentY = coordinates.y;
 
     if (!this.hasCrossedCutLine) {
       if (currentY > (this.canvas.height / 100) * 94) {
@@ -232,7 +273,7 @@ export class DrawingController {
       this.canvasContext.fill();
     }
 
-    this.prevX = e.clientX - this.canvas.offsetLeft;
-    this.prevY = e.clientY - this.canvas.offsetTop;
+    this.prevX = coordinates.x;
+    this.prevY = coordinates.y;
   };
 }
