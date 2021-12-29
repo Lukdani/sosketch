@@ -13,6 +13,7 @@ export class DrawingModel {
   constructor() {
     this.state = {
       ...initialState,
+      canvas: [],
     };
   }
 

@@ -115,7 +115,6 @@ export class DrawingView {
 
   displayCutLineWarning = (canvasId, hide) => {
     const canvas = document.getElementById(`canvasContainer-${canvasId}`);
-    console.log(canvas.getBoundingClientRect().y);
     const warning = createElement("p", ["cutlineWarning"], null);
     warning.style.top = `${
       (CANVAS_CSS_HEIGHT / 100) * 94 + canvas.getBoundingClientRect().y - 1

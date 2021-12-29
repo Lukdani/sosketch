@@ -34,10 +34,7 @@ export class DrawingController {
     );
 
     // "Next" and "Reset" buttons;
-    this.drawingView.renderGameButtons();
-    this.drawingView.bindStartDrawingButton(this.startDrawing);
-    this.drawingView.bindNextTurnButton(this.changeTurn);
-    this.drawingView.bindRestartGameButton(this.restartGame);
+    this.renderGameButtons();
 
     // These buttons should not be displayed before the game has started;
     this.drawingView.disableNextTurn(true);
@@ -55,6 +52,13 @@ export class DrawingController {
     }
   };
 
+  renderGameButtons = () => {
+    this.drawingView.renderGameButtons();
+    this.drawingView.bindStartDrawingButton(this.startDrawing);
+    this.drawingView.bindNextTurnButton(this.changeTurn);
+    this.drawingView.bindRestartGameButton(this.restartGame);
+  };
+
   restartGame = () => {
     const proceed = window.confirm(
       "Are you sure you want to delete all pieces of the drawing and start over?"
@@ -64,7 +68,7 @@ export class DrawingController {
     }
     this.drawingModel.resetModel();
     this.hasCrossedCutLine = false;
-    this.drawingView.renderGameButtons();
+    this.renderGameButtons();
     this.startDrawing();
   };
 
@@ -133,7 +137,6 @@ export class DrawingController {
     );
 
     this.canvasContext = this.canvas.getContext("2d");
-    this.canvasContext.translate(0.5, 0.5);
 
     this.appendDrawListeners();
   };
@@ -153,8 +156,7 @@ export class DrawingController {
 
     if (this.drawingModel.state.canvas.length === 2) {
       this.drawingView.setFinalDrawingView();
-    }
-    if (this.drawingModel.state.canvas.length === 3) {
+    } else if (this.drawingModel.state.canvas.length === 3) {
       this.drawingView.disableNextTurn(true);
       this.endDrawing();
       return;
@@ -182,6 +184,7 @@ export class DrawingController {
     this.prevX = null;
     this.prevY = null;
     this.draw = false;
+
     this.hasCrossedCutLine = false;
   };
 
