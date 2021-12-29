@@ -28,7 +28,7 @@ export class ToolbarModel {
         { label: "rose", hex: "#FFD9CE" },
         { label: "pink", hex: "#F7A1C4" },
       ],
-      widths: [1, 2, 3, 8],
+      widths: [1, 4, 6, 10, 20],
     };
   }
 
@@ -58,7 +58,6 @@ export class ToolbarModel {
     this.state.selectedTool = this.state.tools.find(
       (toolItem) => toolItem.label === tool
     );
-    console.log(this.state.selectedTool);
   };
 
   getSelectedTool = () => {

@@ -20,11 +20,11 @@ if (!empty($postData->image)) {
     $imageIdSql = "SELECT imgId FROM images ORDER BY imgId DESC LIMIT 1";
 
     $imageId = $db->sql($imageIdSql, null)[0];
-  echo(json_encode($imageId->imgId));
+ 
   if (isset($imageId)) {
     $db->saveBase64ImagePng($postData->image, $_SERVER['DOCUMENT_ROOT'] . "/sosketch/uploads/submittedImages/", $imageId->imgId);
   }
-
+  echo(json_encode($imageId->imgId));
 
 } else {
   //echo "TEST 2";

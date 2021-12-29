@@ -13,7 +13,7 @@ export class ImagesView {
       imagesHeader.textContent = "Latest contributions";
       this.rootElement.appendChild(imagesHeader);
 
-      const imagesRow = createElement("div", ["row"], null);
+      const imagesRow = createElement("div", ["row", "g-2"], null);
       this.rootElement.appendChild(imagesRow);
       images.forEach((imageItem) => {
         const imageCol = createElement("div", ["col-6", "col-lg-2"], null);
