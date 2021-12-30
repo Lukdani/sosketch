@@ -4,9 +4,6 @@ require $_SERVER['DOCUMENT_ROOT'] . "/sosketch/settings/init.php";
 $postData = json_decode(file_get_contents('php://input'));
 
 $imgId;
-$file = $_FILES;
-$canvasImg2 = $_POST['file'];
-$canvasImg = $_POST["file"];
 
 if (empty($postData->image)) {
   header('HTTP/1.1 400 Bad Request');
