@@ -128,20 +128,27 @@ export class DrawingView {
     if (nextTurnButton) nextTurnButton.textContent = "Finish drawing";
   };
 
-  displayCutLineWarning = (canvasId, hide) => {
+  displayCutLineWarning = (canvasId, firstCanvas = false) => {
     const canvas = document.getElementById(`canvasContainer-${canvasId}`);
-    const warning = createElement("p", ["cutlineWarning"], null);
+    this.removeCutLineWarning();
+    const warning = createElement("p", ["cutlineWarning"], "cutlineWarning");
     warning.style.bottom = `${(CANVAS_CSS_HEIGHT / 100) * 6 + 1}px`;
     //warning.style.transform = "translateY(-100%)";
     warning.style.width = `${canvas.getBoundingClientRect().width}px`;
-    const warningText = createElement("span", null, null);
-    warningText.innerHTML =
-      "Draw below this line! <br> (so the next person knows where to begin)";
+    const warningText = createElement("span", ["cutlineWarning-text"], null);
+    warningText.innerHTML = `<strong>Draw ${
+      firstCanvas ? "the neck" : ""
+    } below this line</strong> <br> (Use the entire canvas for your part of the drawing)`;
     warning.appendChild(warningText);
 
     const warningIcon = createElement("i", ["fas", "fa-arrow-down"], null);
     warning.appendChild(warningIcon);
     canvas.appendChild(warning);
+  };
+
+  removeCutLineWarning = () => {
+    const cutlineWarning = document.getElementById("cutlineWarning");
+    cutlineWarning?.remove();
   };
 
   setProgressInformation = (progress, itemsToDraw) => {

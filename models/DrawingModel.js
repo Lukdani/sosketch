@@ -7,6 +7,7 @@ const initialState = {
   date: null,
   players: [0, 1],
   playerTurn: null,
+  drawingStarted: false,
 };
 
 export class DrawingModel {

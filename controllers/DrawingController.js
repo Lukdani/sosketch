@@ -141,6 +141,12 @@ export class DrawingController {
 
     this.canvasContext = this.canvas.getContext("2d");
 
+    if (this.drawingModel.state.currentImage == 1) {
+      this.drawingView.displayCutLineWarning(
+        this.drawingModel.state.currentImage,
+        this.drawingModel.state.currentImage === 1
+      );
+    }
     this.appendDrawListeners();
   };
 
@@ -148,7 +154,8 @@ export class DrawingController {
     // Show warning if user did not cross the cut line;
     if (!this.hasCrossedCutLine && !this.drawingModel.isLastTurn()) {
       this.drawingView.displayCutLineWarning(
-        this.drawingModel.state.currentImage
+        this.drawingModel.state.currentImage,
+        this.drawingModel.currentImage == 1
       );
       return;
     }
@@ -239,6 +246,11 @@ export class DrawingController {
 
   drawLine = (e) => {
     const coordinates = this.calculateXandY(e);
+
+    if (!this.drawingModel.state.drawingStarted && this.draw) {
+      this.drawingModel.state.drawingStarted = true;
+      this.drawingView.removeCutLineWarning();
+    }
 
     // Attempt to hinder page scrolling etc.;
     e.preventDefault();
