@@ -24,7 +24,6 @@
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&family=Single+Day&display=swap"
         rel="stylesheet">
 
-
     <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 
@@ -34,7 +33,9 @@
             <div class="col-12">
                 <div id="topbar" class="row">
                     <div class="col-12 col-lg-auto">
-                        <img class="brand" src="/sosketch/images/logo.png" />
+                        <a href="/sosketch/index.php">
+                            <img class="brand" src="/sosketch/images/logo.png" />
+                        </a>
                     </div>
                     <div class="col" id="toolbarContainer"></div>
                     <span>

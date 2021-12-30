@@ -189,6 +189,16 @@ export class ToolbarView {
   setWidthButtonSize = (fontSize) => {
     const widthButtonICon = document.getElementById("chooseWidthButtonIcon");
     widthButtonICon.style["font-size"] = `${(10 + +fontSize) / 50}rem`;
+    const widthIcons = document.querySelectorAll(`.widthButton`);
+    widthIcons.forEach((widthIcon) =>
+      widthIcon?.classList?.remove("widthButton--selected")
+    );
+
+    const selectedWidthIcon = document.querySelectorAll(
+      `button[data-width='${fontSize}']`
+    )[0];
+
+    selectedWidthIcon?.classList?.toggle("widthButton--selected");
   };
 
   renderWidthButtons = (widths, currentWidth) => {
@@ -204,6 +214,9 @@ export class ToolbarView {
         ["btn", "widthButton", "col-12"],
         null
       );
+      if (width === currentWidth) {
+        widthButton.classList.add("widthButton--selected");
+      }
       const widthButtonIcon = createElement("i", ["fas", "fa-circle"], null);
       widthButtonIcon.style["font-size"] = `${(width * 2 + 5) / 50}rem`;
       widthButton.appendChild(widthButtonIcon);
@@ -266,7 +279,6 @@ export class ToolbarView {
     const buttonsRow = createElement("div", ["row", "g-0"], null);
     toolPopover.appendChild(buttonsRow);
     tools?.forEach((tool) => {
-      console.log(tool);
       const buttonContainer = createElement("div", ["col-12"], null);
       buttonsRow.appendChild(buttonContainer);
       const toolButton = createElement(
@@ -284,7 +296,6 @@ export class ToolbarView {
 
   handleToolButtonClicked = (e, callback) => {
     const selectedTool = e.currentTarget.getAttribute("data-tool");
-    console.log(selectedTool);
     callback(selectedTool);
   };
 
@@ -305,21 +316,18 @@ export class ToolbarView {
       this.colorPopoverOpen &&
       !e.target.matches("#colorButtonPopover, #colorButtonPopover *")
     ) {
-      console.log(clickedId + " color");
       this.closeColorPopover();
     }
     if (
       this.widthPopoverOpen &&
       !e.target.matches("#widthButtonPopover, #widthButtonPopover *")
     ) {
-      console.log(clickedId + " width");
       this.closeWidthPopover();
     }
     if (
       this.toolPopoverOpen &&
       !e.target.matches("#toolButtonPopover, #toolButtonPopover *")
     ) {
-      console.log(clickedId + " width");
       this.closeToolPopover();
     }
   };

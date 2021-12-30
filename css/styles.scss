@@ -236,6 +236,10 @@ canvas {
   }
 }
 
+.widthButton.widthButton--selected {
+  color: $customPrimary !important;
+}
+
 #colorButtonPopover {
   .row {
     width: calc(75px * 3);
