@@ -8,6 +8,12 @@ $file = $_FILES;
 $canvasImg2 = $_POST['file'];
 $canvasImg = $_POST["file"];
 
+if (empty($postData->image)) {
+  header('HTTP/1.1 400 Bad Request');
+  $error["errorMessage"] = "No image was found in the request.";
+  echo json_encode($error);
+}
+
 if (!empty($postData->image)) {
     $imgSql =
       "INSERT INTO images (imgDate) VALUES(:imgDate)";
@@ -24,6 +30,14 @@ if (!empty($postData->image)) {
   if (isset($imageId)) {
     $db->saveBase64ImagePng($postData->image, $_SERVER['DOCUMENT_ROOT'] . "/sosketch/uploads/submittedImages/", $imageId->imgId);
   }
+  
+  else if (!isset($imageId)) {
+    header('HTTP/1.1 500 Internal Server Error');
+    $error["errorMessage"] = "There was an internal server error";
+    echo json_encode($error);
+  }
+
+  header('HTTP/1.1 201 Created');
   echo(json_encode($imageId->imgId));
 
 } else {
