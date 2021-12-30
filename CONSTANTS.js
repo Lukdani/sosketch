@@ -10,9 +10,9 @@ if (window.innerWidth < CANVAS_CSS_WIDTH) {
   CANVAS_CSS_WIDTH = window.innerWidth;
   CANVAS_CSS_HEIGHT = CANVAS_CSS_WIDTH / ratioFactor;
 }
-export const FINAL_CANVAS_WIDTH = CANVAS_WIDTH / ratioFactor;
-export const FINAL_CANVAS_HEIGHT = (CANVAS_HEIGHT / ratioFactor) * 3;
+export const FINAL_CANVAS_WIDTH = CANVAS_WIDTH;
+export const FINAL_CANVAS_HEIGHT = CANVAS_HEIGHT * 3;
 
 export const FINAL_CSS_CANVAS_WIDTH = CANVAS_CSS_WIDTH / ratioFactor / 1.5;
-export const FINAL_CS__CANVAS_HEIGHT =
+export const FINAL_CSS__CANVAS_HEIGHT =
   ((CANVAS_CSS_HEIGHT / ratioFactor) * 3) / 1.5;

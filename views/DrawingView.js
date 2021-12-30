@@ -6,7 +6,7 @@ import {
   CANVAS_CSS_HEIGHT,
   CANVAS_CSS_WIDTH,
   FINAL_CSS_CANVAS_WIDTH,
-  FINAL_CS__CANVAS_HEIGHT,
+  FINAL_CSS__CANVAS_HEIGHT,
 } from "../CONSTANTS.js";
 
 import { createElement } from "/sosketch/utils/createElement.js";
@@ -30,46 +30,53 @@ export class DrawingView {
       "gameButtonContainer"
     );
     this.toolbarContainer.appendChild(gameButtonsContainer);
-    this.startDrawingButton = createElement(
+    const startDrawingButton = createElement(
       "button",
       ["btn", "btn-primary", "primary"],
       "startDrawingButton"
     );
-    this.startDrawingButton.textContent = "Start!";
-    this.rootElement.appendChild(this.startDrawingButton);
+    this.rootElement.appendChild(startDrawingButton);
 
-    this.nextTurn = createElement(
+    const startDrawingIcon = createElement("i", ["fas", "fa-pen"], null);
+    startDrawingButton.appendChild(startDrawingIcon);
+
+    const startDrawingText = createElement("span", null, null);
+    startDrawingText.textContent = "Start!";
+    startDrawingButton.appendChild(startDrawingText);
+
+    const nextTurn = createElement(
       "button",
       ["btn", "btn-primary"],
       "nextTurnButton"
     );
-    this.nextTurn.textContent = "Next";
-    gameButtonsContainer.appendChild(this.nextTurn);
+    nextTurn.textContent = "Next";
+    gameButtonsContainer.appendChild(nextTurn);
 
-    this.restartGame = createElement(
+    const restartGame = createElement(
       "button",
       ["btn", "btn-danger", "primary"],
       "restartGameButton"
     );
-    this.restartGame.textContent = "Reset";
-    gameButtonsContainer.appendChild(this.restartGame);
+    restartGame.textContent = "Reset";
+    gameButtonsContainer.appendChild(restartGame);
   };
 
   addCanvas = (prevCanvas, id, backgroundColor) => {
     this.rootElement.innerHTML = "";
-    const canvasContainer = createElement(
-      "span",
-      ["canvasContainer"],
-      `canvasContainer-${id}`
-    );
-    this.rootElement.appendChild(canvasContainer);
 
     const progressInformation = createElement(
       "p",
       ["noSelect"],
       "progressInformation"
     );
-    canvasContainer.appendChild(progressInformation);
+    this.rootElement.appendChild(progressInformation);
+
+    const canvasContainer = createElement(
+      "span",
+      ["canvasContainer"],
+      `canvasContainer-${id}`
+    );
+    this.rootElement.appendChild(canvasContainer);
 
     const newCanvas = createElement(
       "canvas",
@@ -92,8 +99,8 @@ export class DrawingView {
     );
     newCanvas.height = FINAL_CANVAS_HEIGHT;
     newCanvas.width = FINAL_CANVAS_WIDTH;
-    newCanvas.style.height = FINAL_CS__CANVAS_HEIGHT;
-    newCanvas.style.width = FINAL_CSS_CANVAS_WIDTH;
+    newCanvas.style["height"] = `${FINAL_CSS__CANVAS_HEIGHT}px`;
+    newCanvas.style["width"] = `${FINAL_CSS_CANVAS_WIDTH}px`;
 
     this.rootElement.appendChild(newCanvas);
     return document.getElementById("canvas-final");
@@ -124,10 +131,8 @@ export class DrawingView {
   displayCutLineWarning = (canvasId, hide) => {
     const canvas = document.getElementById(`canvasContainer-${canvasId}`);
     const warning = createElement("p", ["cutlineWarning"], null);
-    warning.style.top = `${
-      (CANVAS_CSS_HEIGHT / 100) * 94 + canvas.getBoundingClientRect().y - 1
-    }px`;
-    warning.style.transform = "translateY(-100%)";
+    warning.style.bottom = `${(CANVAS_CSS_HEIGHT / 100) * 6 + 1}px`;
+    //warning.style.transform = "translateY(-100%)";
     warning.style.width = `${canvas.getBoundingClientRect().width}px`;
     const warningText = createElement("span", null, null);
     warningText.innerHTML =
@@ -144,7 +149,7 @@ export class DrawingView {
       "progressInformation"
     );
     if (progressInformationElement) {
-      const progressInfoElement = createElement("span", null, null);
+      const progressInfoElement = createElement("span", ["noSelect"], null);
       progressInfoElement.textContent = progress;
       progressInformationElement.appendChild(progressInfoElement);
       const itemsToDrawElement = createElement(

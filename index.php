@@ -47,16 +47,19 @@
                     <div class="instructions">
                         <h2 class="mb-2">Instructions</h2>
                         <ul>
-                            <li>Don't look at the screen when another person is drawing </li>
-                            <li>Person 1 draws the head + neck <span class="small">(and clicks "Next")</li>
-                            <li>Person 2 draws the torso + arms <span class="small">(and clicks "Next")</span></li>
-                            <li>Person 3 (or 1) draws the legs <span class="small">(and clicks "Finish drawing")</span>
-                            <li>Admire the result... 😳 </li>
+                            <li>Don't look when another person is drawing </li>
+                            <li><strong>Person 1</strong> draws head + neck <span class="small">(and clicks <span
+                                        class="text-primary">"Next"</span> )</li>
+                            <li><strong>Person 2</strong> draws torso + arms <span class="small">(and clicks
+                                    <span class="text-primary">"Next"</span>)</span></li>
+                            <li><strong>Person 3</strong> (or 1) draws legs + feet</li>
+                            <li>Click <span class="text-primary">"Finish drawing"</span> and admire the result... 😳
+                            </li>
                             </li>
                         </ul>
-                        <p class="alert alert-warning mt-2 small">Note:<br> By participating you AGREE and give YOUR
+                        <p class="alert alert-warning mt-2 small">Note: By participating you AGREE and give YOUR
                             CONSENT
-                            TO<br>
+                            TO
                             that
                             <strong>your drawing may be
                                 freely distributed, shared and displayed
