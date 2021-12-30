@@ -63,6 +63,14 @@ export class DrawingView {
       `canvasContainer-${id}`
     );
     this.rootElement.appendChild(canvasContainer);
+
+    const progressInformation = createElement(
+      "p",
+      ["noSelect"],
+      "progressInformation"
+    );
+    canvasContainer.appendChild(progressInformation);
+
     const newCanvas = createElement(
       "canvas",
       ["drawingCanvas"],
@@ -129,6 +137,24 @@ export class DrawingView {
     const warningIcon = createElement("i", ["fas", "fa-arrow-down"], null);
     warning.appendChild(warningIcon);
     canvas.appendChild(warning);
+  };
+
+  setProgressInformation = (progress, itemsToDraw) => {
+    const progressInformationElement = document.getElementById(
+      "progressInformation"
+    );
+    if (progressInformationElement) {
+      const progressInfoElement = createElement("span", null, null);
+      progressInfoElement.textContent = progress;
+      progressInformationElement.appendChild(progressInfoElement);
+      const itemsToDrawElement = createElement(
+        "span",
+        ["progressInformation-itemsToDraw"],
+        null
+      );
+      itemsToDrawElement.textContent = ` Draw ${itemsToDraw}`;
+      progressInformationElement.appendChild(itemsToDrawElement);
+    }
   };
 
   bindStartDrawingButton = (callback) => {

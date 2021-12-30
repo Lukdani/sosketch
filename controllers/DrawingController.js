@@ -128,7 +128,10 @@ export class DrawingController {
     this.drawingModel.startDrawing();
 
     this.drawingView.addCanvas(null, 1);
-
+    this.drawingView.setProgressInformation(
+      `${this.drawingModel.state.currentImage}/${this.drawingModel.state.totalImages}`,
+      "head + neck"
+    );
     this.drawingView.disableNextTurn(false);
     this.drawingView.disableRestartGame(false);
 
@@ -162,6 +165,15 @@ export class DrawingController {
       return;
     }
     this.drawingView.addCanvas(null, this.drawingModel.state.currentImage);
+    this.drawingView.setProgressInformation(
+      `${this.drawingModel.state.currentImage}/${this.drawingModel.state.totalImages}`,
+      `${
+        this.drawingModel.state.canvas.length === 1
+          ? "torso + arms"
+          : "legs + feet"
+      }`
+    );
+
     this.canvas = document.getElementById(
       `canvas-${this.drawingModel.state.currentImage}`
     );

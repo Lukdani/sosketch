@@ -42,13 +42,13 @@
             </div>
         </div>
         <div class="row">
-            <div class="col-12">
+            <div class="col-12 p-0">
                 <div id="drawingContainer">
                     <div class="instructions">
                         <h2 class="mb-2">Instructions</h2>
                         <ul>
                             <li>Don't look at the screen when another person is drawing </li>
-                            <li>Person 1 draws the head <span class="small">(and clicks "Next")</li>
+                            <li>Person 1 draws the head + neck <span class="small">(and clicks "Next")</li>
                             <li>Person 2 draws the torso + arms <span class="small">(and clicks "Next")</span></li>
                             <li>Person 3 (or 1) draws the legs <span class="small">(and clicks "Finish drawing")</span>
                             <li>Admire the result... 😳 </li>
