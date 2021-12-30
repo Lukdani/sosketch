@@ -1,3 +1,4 @@
+// CANVAS SIZING;
 export let CANVAS_WIDTH = 1600;
 export let CANVAS_HEIGHT = 800;
 

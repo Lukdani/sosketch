@@ -188,10 +188,11 @@ export class ToolbarView {
 
   setWidthButtonSize = (fontSize) => {
     const widthButtonICon = document.getElementById("chooseWidthButtonIcon");
-    widthButtonICon.style["font-size"] = `${(10 + +fontSize) / 30}rem`;
+    widthButtonICon.style["font-size"] = `${(10 + +fontSize) / 50}rem`;
   };
 
-  renderWidthButtons = (widths) => {
+  renderWidthButtons = (widths, currentWidth) => {
+    this.setWidthButtonSize(currentWidth);
     const widthPopover = document.getElementById("widthPopover");
     const buttonsRow = createElement("div", ["row", "g-0"], null);
     widthPopover.appendChild(buttonsRow);
@@ -204,7 +205,7 @@ export class ToolbarView {
         null
       );
       const widthButtonIcon = createElement("i", ["fas", "fa-circle"], null);
-      widthButtonIcon.style["font-size"] = `${width * 2 + 5}px`;
+      widthButtonIcon.style["font-size"] = `${(width * 2 + 5) / 50}rem`;
       widthButton.appendChild(widthButtonIcon);
       widthButton.setAttribute("data-width", width);
       buttonContainer.appendChild(widthButton);

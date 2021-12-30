@@ -11,11 +11,13 @@ const tools = [
   },
 ];
 
+const widths = [1, 4, 5, 10, 20, 30, 50];
+
 export class ToolbarModel {
   constructor() {
     this.state = {
       selectedColor: "#000",
-      selectedWidth: 2,
+      selectedWidth: widths[2],
       selectedTool: tools[0],
       tools: [...tools],
       colors: [
@@ -32,7 +34,7 @@ export class ToolbarModel {
         { label: "orange", hex: "orange" },
         { label: "rose", hex: "#FFD9CE" },
       ],
-      widths: [1, 4, 5, 10, 20, 30],
+      widths: [...widths],
     };
   }
 
